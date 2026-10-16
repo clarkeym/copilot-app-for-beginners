@@ -18,6 +18,18 @@ describe("filterBooks", () => {
     expect(results.map((book) => book.title)).toEqual(["The Hobbit"]);
   });
 
+  it.each([
+    ["hobbit", "HOBBIT"],
+    ["tolkien", "TOLKIEN"],
+    ["le guin", "LE GUIN"]
+  ])("returns the same results for %s and %s", (lower, upper) => {
+    const lowerResults = filterBooks(books, { ...defaultFilters, searchTerm: lower });
+    const upperResults = filterBooks(books, { ...defaultFilters, searchTerm: upper });
+
+    expect(lowerResults.length).toBeGreaterThan(0);
+    expect(upperResults).toEqual(lowerResults);
+  });
+
   it("filters by genre and reading status together", () => {
     const results = filterBooks(books, {
       ...defaultFilters,
